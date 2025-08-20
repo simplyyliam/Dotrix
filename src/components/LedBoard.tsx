@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Dot {
   x: number;
@@ -10,8 +10,13 @@ function LedBoard() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement[]>([]);
 
-  const boardWidth = 800;
-  const boardHeight = 600;
+  const [dimension] = useState({
+    w: 100,
+    h: 40,
+  });
+
+  const boardWidth = innerWidth;
+  const boardHeight = innerHeight;
   const dotSpacing = 20;
 
   const cols = Math.floor(boardWidth / dotSpacing);
@@ -22,17 +27,20 @@ function LedBoard() {
     y: Math.floor(i / cols) * dotSpacing,
   }));
 
-
-
   // Setup breathing animation
   useEffect(() => {
     dotRef.current.forEach((dotEl, i) => {
       if (!dotEl) return;
 
+      // const r = Math.random() * 256
+      // const g = Math.random() * 256
+      // const b = Math.random() * 256
       // Create infinite "breathing" animation
       gsap.to(dotEl, {
         scale: 0.5,
-        duration: 1 + Math.random(), // slight variation per dot
+        duration: 1 + Math.random(),
+        // backgroundColor: `rgba(${r}, ${g}, ${b}, 1)`,
+        backgroundColor: "rgba(255, 255, 255)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -43,7 +51,11 @@ function LedBoard() {
   return (
     <div
       ref={boardRef}
-      className="relative w-[800px] h-[600px] rounded-2xl overflow-hidden bg-[#111]"
+      className={`relative h-[400px] rounded-2xl overflow-hidden`}
+      style={{
+        width: dimension.w + "vw",
+        height: dimension.h + "vh",
+      }}
     >
       {dots.map((dot, i) => (
         <div
@@ -58,7 +70,7 @@ function LedBoard() {
             height: "6px",
             borderRadius: "50%",
             position: "absolute",
-            backgroundColor: "rgba(255,255,255,1)",
+            // backgroundColor: "rgba(255,255,255,1)",
             transformOrigin: "center center",
           }}
         ></div>

@@ -29,7 +29,7 @@ function LedBoard() {
 
   // Setup breathing animation
   useEffect(() => {
-    dotRef.current.forEach((dotEl, i) => {
+    dotRef.current.forEach((dotEl) => {
       if (!dotEl) return;
 
       // const r = Math.random() * 256
